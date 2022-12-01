@@ -16,20 +16,15 @@ def main():
     }
     while True:
         try:
-            try:
-                url = "https://dvmn.org/api/long_polling/"
-                headers = {
-                            "Authorization": f"Token {dvmn_token}",
-                }
-                response = requests.get(url, headers=headers,
-                                        params=params, timeout=70)
-                response.raise_for_status()
-                work_response = response.json()
-                status = work_response.get("status")
-            except requests.exceptions.ReadTimeout:
-                time.sleep(10)
-            except requests.exceptions.ConnectionError:
-                continue
+            url = "https://dvmn.org/api/long_polling/"
+            headers = {
+                        "Authorization": f"Token {dvmn_token}",
+            }
+            response = requests.get(url, headers=headers,
+                                    params=params, timeout=70)
+            response.raise_for_status()
+            work_response = response.json()
+            status = work_response.get("status")
             if status == "timeout":
                 params["timestamp"] = work_response.get("timestamp_to_request")
             elif status == "found":
