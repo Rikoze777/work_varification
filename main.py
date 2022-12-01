@@ -9,7 +9,7 @@ def main():
     load_dotenv()
     dvmn_token = os.environ.get("DVMN_TOKEN")
     telegram_token = os.environ.get("TELEGRAM_TOKEN")
-    chat_id = os.environ.get("CHAT_ID")
+    tg_chat_id = os.environ.get("TG_CHAT_ID")
     bot = telegram.Bot(token=telegram_token)
     params = {
                 "timestamp": None,
@@ -45,7 +45,7 @@ def main():
                               if is_successful
                               else "К сожалению, в работе нашлись ошибки")
                     bot.send_message(text=f"{header}\n{answer}",
-                                     chat_id=chat_id)
+                                     chat_id=tg_chat_id)
         except requests.exceptions.ReadTimeout:
             time.sleep(10)
         except requests.exceptions.ConnectionError:
