@@ -24,17 +24,17 @@ def main():
                 response = requests.get(url, headers=headers,
                                         params=params, timeout=70)
                 response.raise_for_status()
-                json_response = response.json()
-                status = json_response.get("status")
+                work_response = response.json()
+                status = work_response.get("status")
             except requests.exceptions.ReadTimeout:
                 continue
             except requests.exceptions.ConnectionError:
                 continue
             if status == "timeout":
-                params["timestamp"] = json_response.get("timestamp_to_request")
+                params["timestamp"] = work_response.get("timestamp_to_request")
             elif status == "found":
-                params["timestamp"] = json_response.get("last_attempt_timestamp")
-                last_attempt = json_response["new_attempts"][0]
+                params["timestamp"] = work_response.get("last_attempt_timestamp")
+                last_attempt = work_response["new_attempts"][0]
                 if last_attempt:
                     lesson_title = last_attempt['lesson_title']
                     lesson_url = last_attempt['lesson_url']
