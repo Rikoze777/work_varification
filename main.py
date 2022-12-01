@@ -27,7 +27,7 @@ def main():
                 work_response = response.json()
                 status = work_response.get("status")
             except requests.exceptions.ReadTimeout:
-                continue
+                time.sleep(10)
             except requests.exceptions.ConnectionError:
                 continue
             if status == "timeout":
