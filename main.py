@@ -23,13 +23,13 @@ def main():
             response = requests.get(url, headers=headers,
                                     params=params, timeout=90)
             response.raise_for_status()
-            work_response = response.json()
-            status = work_response.get("status")
+            works = response.json()
+            status = works.get("status")
             if status == "timeout":
-                params["timestamp"] = work_response.get("timestamp_to_request")
+                params["timestamp"] = works.get("timestamp_to_request")
             elif status == "found":
-                params["timestamp"] = work_response.get("last_attempt_timestamp")
-                last_attempt = work_response["new_attempts"][0]
+                params["timestamp"] = works.get("last_attempt_timestamp")
+                last_attempt = works["new_attempts"][0]
                 if last_attempt:
                     lesson_title = last_attempt['lesson_title']
                     lesson_url = last_attempt['lesson_url']
