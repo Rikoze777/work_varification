@@ -21,7 +21,7 @@ def main():
                         "Authorization": f"Token {dvmn_token}",
             }
             response = requests.get(url, headers=headers,
-                                    params=params, timeout=70)
+                                    params=params, timeout=90)
             response.raise_for_status()
             work_response = response.json()
             status = work_response.get("status")
@@ -42,7 +42,7 @@ def main():
                     bot.send_message(text=f"{header}\n{answer}",
                                      chat_id=tg_chat_id)
         except requests.exceptions.ReadTimeout:
-            time.sleep(10)
+            continue
         except requests.exceptions.ConnectionError:
             time.sleep(10)
 
