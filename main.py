@@ -3,6 +3,23 @@ import requests
 import os
 import time
 import telegram
+import logging
+import sys
+
+
+log = logging.getLogger(__file__)
+
+
+class TelegramLogsHandler(logging.Handler):
+
+    def __init__(self, tg_bot, chat_id):
+        super().__init__()
+        self.chat_id = chat_id
+        self.tg_bot = tg_bot
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.tg_bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
 def main():
@@ -14,6 +31,16 @@ def main():
     params = {
                 "timestamp": None,
     }
+    logging.basicConfig(
+        filename='app.log',
+        filemode='w',
+        level=logging.INFO,
+        format='%(name)s - %(levelname)s - %(asctime)s - %(message)s'
+    )
+    log.setLevel(logging.INFO)
+    log.addHandler(logging.StreamHandler(stream=sys.stdout))
+    log.addHandler(TelegramLogsHandler(bot, tg_chat_id))
+    log.info('Бот запущен')
     while True:
         try:
             url = "https://dvmn.org/api/long_polling/"
@@ -41,9 +68,10 @@ def main():
                               else "К сожалению, в работе нашлись ошибки")
                     bot.send_message(text=f"{header}\n{answer}",
                                      chat_id=tg_chat_id)
-        except requests.exceptions.ReadTimeout:
-            continue
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ReadTimeout as timeout:
+            log.warning(f'Время ожидания вышло: {timeout}')
+        except requests.exceptions.ConnectionError as error:
+            log.warning(f'Ошибка соединения: {error}')
             time.sleep(10)
 
 
