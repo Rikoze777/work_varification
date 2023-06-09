@@ -1,6 +1,4 @@
-FROM python:3.10
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+FROM python:3.9-slim
 WORKDIR /app
 COPY . .
 RUN pip install --upgrade pip
