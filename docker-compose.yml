@@ -1,6 +1,6 @@
 version: '3'
 services:
-  my-telegram-bot:
+  devman_bot:
     build:
       context: .
       dockerfile: Dockerfile
