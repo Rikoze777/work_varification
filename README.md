@@ -29,6 +29,13 @@ pip install -r requirements.txt
 python3 main.py
 ```
 
+## Docker
+
+Для разворачивания с помощью docker, необходимо:
+1. Установить docker и docker-compose
+2. Наличие `.env` и `requirements.txt` в корне проекта
+3. Выполнить команду: `docker-compose up --build`
+
 ##  Пример успешного запуска
 
 Итогом будет получение вами сообщения от бота 
